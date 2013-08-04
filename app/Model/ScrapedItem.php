@@ -1,9 +1,11 @@
 <?php
 App::import("Vendor", "simple_html_dom");
+App::import("Vendor", "finediff");
 ini_set('memory_limit','256M');
 
-class Source extends AppModel {
-	var $useTable = "scrapes";
+class ScrapedItem extends AppModel {
+	var $belongsTo = array("Scrape");
+
 	var $sources = array(
 		"rogers" => array(
 			"name" => "rogers",
@@ -85,18 +87,105 @@ class Source extends AppModel {
 			)
 		)
 	);
-
+	
 	function test() {
-		$tmp = ClassRegistry::init("Tmp")->findById(1);
-		$text = $this->_parseHtml($tmp["Tmp"]["content"]);
+		// $tmp = ClassRegistry::init("Tmp")->findById(1);
+		// $text = $this->_parseAndSave($tmp["Tmp"]["content"]);
+		$this->getDiffs();
+		// $this->_parseDiff("102.1 THE EDGE Toronto<ins> test</ins>");
 	}
 
-	private function _parseHtml($text, $vendor = "rogers") {
+	function getDiffs() {
+		$this->Scrape->contain("ScrapedItem");
+		$batches = $this->Scrape->find("all", array(
+			"order" => array("Scrape.created" => "DESC"),
+			"limit" => 2
+		));
+		$from_text = $to_text = "";
+		foreach ($batches[1]["ScrapedItem"] as $item) {
+			$from_text .= json_encode(array(
+				"vendor" => $item["vendor"],
+				"package" => $item["package"],
+				"tag" => $item["tag"],
+				"channel" => mb_convert_encoding($item["channel"], 'HTML-ENTITIES', 'UTF-8')
+			));
+			$from_text .= "\n";
+		}
+		foreach ($batches[0]["ScrapedItem"] as $item) {
+			$to_text .= json_encode(array(
+				"vendor" => $item["vendor"],
+				"package" => $item["package"],
+				"tag" => $item["tag"],
+				"channel" => mb_convert_encoding($item["channel"], 'HTML-ENTITIES', 'UTF-8')
+			));
+			$to_text .= "\n";
+		}
+
+		$opcodes = FineDiff::getDiffOpcodes($from_text, $to_text);
+		$diffString = FineDiff::renderDiffToHTMLFromOpcodes($from_text, $opcodes);
+
+		$diffs = explode("\n", html_entity_decode(html_entity_decode($diffString)) );
+		foreach ($diffs as $key => $line) {
+			unset($diffs[$key]);
+			if ( strpos($line, "<ins>") !== false || strpos($line, "<del>") !== false ) {
+				$json = $line;
+
+				if ( strpos($json, "<ins>") === 0 ) {
+					$json = str_replace("<ins>", "", $json);
+					$data = Set::reverse(json_decode($json));
+					foreach ($data as $field => $val) {
+						$data[$field] = "<ins>".$val."</ins>";
+					}
+				} else if ( strpos($json, "<del>") === 0 ) {
+					$json = str_replace("<del>", "", $json);
+					$data = Set::reverse(json_decode($json));
+					foreach ($data as $field => $val) {
+						$data[$field] = "<del>".$val."</del>";
+					}
+				} else {
+					$data = Set::reverse(json_decode($json));
+				}
+				foreach ($data as $field => $val) {
+					$diffs[$key][$field] = $this->_parseDiff($val);
+				}
+			}
+		}
+		return $diffs;
+	}
+
+	function _parseDiff($text) {
+		$data = array(
+			"old" => strip_tags( $this->_replaceBetween($text, "<ins>", "</ins>", "") ),
+			"new" => strip_tags( $this->_replaceBetween($text, "<del>", "</del>", "") )
+		);
+		return $data;
+	}
+
+	function _replaceBetween($str, $needle_start, $needle_end, $replacement) {
+		$pos = strpos($str, $needle_start);
+		if ($pos === false) return $str;
+		$start = $pos === false ? 0 : $pos + strlen($needle_start);
+
+		$pos = strpos($str, $needle_end, $start);
+		if ($pos === false) return $str;
+		$end = $pos === false ? strlen($str) : $pos;
+
+		return substr_replace($str, $replacement, $start, $end - $start);
+	}
+
+	function saveChannels() {
+		$this->Channel = ClassRegistry::init("Channel");
+	}
+
+	private function _parseAndSave($text, $vendor = "rogers") {
+		$this->Scrape->create();
+		$this->Scrape->save();
+		$scrape_id = $this->Scrape->id;
+
 		$html = str_get_html($text);
 
 		foreach ( $this->sources[$vendor]["packages"] as $package) {
 			foreach ($package["paths"] as $tag => $paths) {
-// debug($package);die;
 				$doms = $html->find($paths[0][0], $paths[0][1])->find($paths[1][0]);
 
 				$records = array();
@@ -114,6 +203,7 @@ class Source extends AppModel {
 				// save
 				foreach ($records as $key => $channel) {
 					$this->create(array(
+						"scrape_id" => $scrape_id,
 						"vendor" => $vendor,
 						"package" => $package["name"],
 						"tag" => $tag,

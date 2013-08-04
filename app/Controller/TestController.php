@@ -1,8 +1,8 @@
 <?php
 class TestController extends AppController {
-	var $uses = array("Source");
+	var $uses = array("ScrapedItem");
 
 	function index() {
-		$this->Source->test();
+		$this->ScrapedItem->test();
 	}
 }
