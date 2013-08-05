@@ -1,5 +1,5 @@
 body {
-	padding-top: 110px; /* 60px to make the container go all the way to the bottom of the topbar */
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 h1, h2, h3, h4, h5, h6 { font-weight: normal; }
 textarea { resize: none; }
@@ -14,23 +14,17 @@ body > .container { min-height: 500px; }
 .container-narrow > #content { min-height: 300px; }
 
 /* footer */
-.footer {
-	margin-top: 100px;
-}
-
+.footer { margin-top: 100px }
 .page-header.thin { margin: 20px 0 10px; padding-bottom: 3px; }
 .page-header.thin h3, h4 { margin: 2px 0; }
 
 /* header */
-.navbar-fixed-top li { line-height: 60px; }
-.navbar-fixed-top .dropdown-toggle .caret { margin-top: 28px!important; }
 
 .navbar .brand {
 	margin-left: 0;
 	margin-right: 10px;
-	height: 60px;
+	/*height: 60px;*/
 	width: 300px;
-	background: url("../img/brand.png") no-repeat scroll left center transparent;
 }
 .navbar > .alert {
 	position: absolute;

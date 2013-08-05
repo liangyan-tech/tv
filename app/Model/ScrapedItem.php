@@ -101,6 +101,7 @@ class ScrapedItem extends AppModel {
 			"order" => array("Scrape.created" => "DESC"),
 			"limit" => 2
 		));
+
 		$from_text = $to_text = "";
 		foreach ($batches[1]["ScrapedItem"] as $item) {
 			$from_text .= json_encode(array(
@@ -155,6 +156,7 @@ class ScrapedItem extends AppModel {
 
 	function _parseDiff($text) {
 		$data = array(
+			"diff-text" => $text,
 			"old" => strip_tags( $this->_replaceBetween($text, "<ins>", "</ins>", "") ),
 			"new" => strip_tags( $this->_replaceBetween($text, "<del>", "</del>", "") )
 		);

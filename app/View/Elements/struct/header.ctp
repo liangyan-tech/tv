@@ -13,7 +13,7 @@
 		<div class="container">
 			<?php
 				echo $this->Html->link(
-					"&nbsp;",
+					"Sanders' TV Scraper",
 					"/",
 					array("class" => "brand", "escape" => false)
 				);
@@ -22,42 +22,23 @@
 			<ul class="nav">
 				<?php $uri = $this->params->controller."_".$this->params->action; ?>
 
-				<?php if ( $this->params["prefix"] == "admin" ): ?>
-					<li class="<?php echo ($uri == "users_admin_index") ? "active" : "" ; ?>">
-						<?php
-							echo $this->Html->link('<i class="icon-white- icon-user"></i> Users', "/admin/users/index", array(
-								"escape" => false
-							));
-						?>
-					</li>
-					<li class="<?php echo ($uri == "vars_admin_index") ? "active" : "" ; ?>">
-						<?php
-							echo $this->Html->link('<i class="icon-white- icon-comment"></i> Variables', "/admin/vars/index", array(
-								"escape" => false
-							));
-						?>
-					</li>
-				<?php else: ?>
-					<li class="<?php echo ($uri == "projects_index") ? "active" : "" ; ?>">
-						<?php
-							echo $this->Html->link('<i class="icon-white- icon-flag"></i> Projects', "/projects", array(
-								"escape" => false
-							));
-						?>
-					</li>
-				<?php endif; ?>
-			</ul>
-			
-			<ul class="nav pull-right">
-			<?php if ( $this->params["prefix"] != "admin" ): ?>
-				<li>
+				<li class="<?php echo ($uri == "home_index") ? "active" : "" ; ?>">
 					<?php
-						echo $this->Html->link('<i class="icon-white- icon-share-alt"></i> Resource Guide', "http://fairhousingmn.org/", array(
+						echo $this->Html->link('<i class="icon-white- icon-adjust"></i> Diffs', "/home", array(
 							"escape" => false
 						));
 					?>
 				</li>
-			<?php endif; ?>
+				<li class="<?php echo ($uri == "channels_index") ? "active" : "" ; ?>">
+					<?php
+						echo $this->Html->link('<i class="icon-white- icon-list-alt"></i> Channels', "/channels", array(
+							"escape" => false
+						));
+					?>
+				</li>
+			</ul>
+			
+<!-- 			<ul class="nav pull-right">
 				<li class="dropdown">
 					<?php
 						echo $this->Html->link(
@@ -71,21 +52,6 @@
 						);
 					?>
 					<ul class="dropdown-menu">
-					<?php if (AuthComponent::user("admin")): ?>
-						<?php if ( $this->params["prefix"] == "admin" ): ?>
-							<li>
-								<?php
-									echo $this->Html->link('<i class="icon-white- icon-share-alt"></i> Get out of Admin Area', "/", array(
-										"escape" => false
-									));
-								?>
-							</li>
-						<?php else: ?>
-							<li>
-								<?php echo $this->Html->link('<i class="icon-wrench"></i> Admin', "/admin/users", array("escape" => false)); ?>
-							</li>
-						<?php endif; ?>
-					<?php endif; ?>
 						<li>
 							<?php
 								echo $this->Html->link(
@@ -100,7 +66,8 @@
 						</li>
 					</ul>
 				</li>
-			</ul>
+			</ul> -->
+
 		</div>
 	</div>
 </div>

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>
-			<?php echo $title_for_layout; ?> | AFMT
+			<?php echo $title_for_layout; ?> | TV Scraper
 		</title>
 		<?php
 			echo $this->Html->meta('icon');
@@ -17,8 +17,6 @@
 			
 			echo $this->Html->script(array(
 				'//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-				"jquery.json-2.4.min",
-				"bootstrap-datepicker",
 				'jquery.form.js',
 				"/bootstrap/js/bootstrap.min.js",
 				"app.common"
@@ -33,12 +31,7 @@
 		<![endif]-->
 	</head>
 	
-	<body
-		class="<?php echo $this->params->controller; ?>"
-		<?php if ($this->params->controller."-".$this->params->action == "projects-edit"): ?>
-			data-target="#sidebar-nav" data-spy="scroll"
-		<?php endif; ?>
-	>
+	<body class="<?php echo $this->params->controller; ?>">
 		<?php echo $this->element("struct/header");?>
 		<div class="container">
 			<div id="content" class="row">
