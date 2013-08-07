@@ -9,7 +9,6 @@
 			echo $this->Html->meta('icon');
 			echo $this->Html->css(array(
 				"/bootstrap/css/bootstrap.min.css",
-				"datepicker.css",
 				"bootstrap-mod"
 			));
 			if (file_exists(WWW_ROOT.DS."css".DS.$this->params["controller"].".css")) echo $this->Html->css($this->params["controller"]);

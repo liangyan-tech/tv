@@ -1,8 +1,21 @@
 <div class="page-header">
 	<h2>Channels <small>add, edit or delete a channel</small></h2>
+
+	<?php
+		echo $this->Html->link(
+			'<i class="icon-plus-sign icon-white"></i> Create a New Channel',
+			"/channels/edit/",
+			array(
+				"escape" => false,
+				"class" => "btn btn-primary",
+				"data-target" => "#user-modal",
+				"data-toggle" => "modal" 
+			)
+		);
+	?>
 </div>
 
-<table class="table table-condense table-striped">
+<table class="table table-striped table-condensed">
 	<thead>
 		<tr>
 			<th>Id</th>
@@ -29,7 +42,12 @@
 							echo $this->Html->link(
 								'<i class="icon-pencil icon-white"></i> Edit',
 								"/channels/edit/".$channel["Channel"]["id"],
-								array("escape" => false, "class" => "btn btn-primary")
+								array(
+									"escape" => false,
+									"class" => "btn btn-primary",
+									"data-target" => "#user-modal",
+									"data-toggle" => "modal" 
+								)
 							);
 						?>
 						<?php

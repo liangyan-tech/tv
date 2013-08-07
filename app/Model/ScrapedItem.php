@@ -151,6 +151,50 @@ class ScrapedItem extends AppModel {
 				}
 			}
 		}
+		
+		foreach ($diffs as $key => $diff) {
+			// get the latest scraped_item_id
+			$item = $this->find("first", array(
+				"order" => array(
+					"ScrapedItem.created" => "DESC"
+				),
+				"conditions" => array(
+					"ScrapedItem.vendor" => $diff["vendor"]["new"],
+					"ScrapedItem.package" => $diff["package"]["new"],
+					"ScrapedItem.tag" => $diff["tag"]["new"],
+					"ScrapedItem.channel" => $diff["channel"]["new"]
+				)
+			));
+			$diffs[$key]["modified_according_to"] = 0;
+			if ($item) {
+				$diffs[$key]["modified_according_to"] = $item["ScrapedItem"]["id"];
+			}
+
+			// get channel_id
+			$channel = ClassRegistry::init("Channel")->find("first", array(
+				"order" => array(
+					"Channel.modified" => "DESC"
+				),
+				"conditions" => array(
+					"Channel.vendor" => $diff["vendor"]["old"],
+					"Channel.package" => $diff["package"]["old"],
+					"Channel.tag" => $diff["tag"]["old"],
+					"Channel.channel" => $diff["channel"]["old"]
+				)
+			));
+			$diffs[$key]["channel_id"] = 0;
+			if ($channel) {
+				$diffs[$key]["channel_id"] = $channel["Channel"]["id"];
+			}
+			
+			// get change type
+			$diffs[$key]["type"] = "update";
+			if ( !$diff["channel"]["old"] ) {
+				$diffs[$key]["type"] = "create";
+			} else if ( !$diff["channel"]["new"] ) {
+				$diffs[$key]["type"] = "delete";
+			}
+		}
 		return $diffs;
 	}
 

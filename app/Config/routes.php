@@ -1,5 +1,5 @@
 <?php
-	Router::connect('/', array('controller' => 'home', 'action' => 'index'));
+	Router::connect('/', array('controller' => 'diffs', 'action' => 'index'));
 
 
 /**

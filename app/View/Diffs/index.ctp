@@ -22,6 +22,7 @@
 			<th>Package</th>
 			<th>Tag</th>
 			<th>Channel</th>
+			<th>Type</th>
 			<th>Changed</th>
 			<th>Action</th>
 		</tr>
@@ -42,10 +43,22 @@
 					<?php echo $diff["channel"]["diff-text"]; ?>
 				</td>
 				<td>
+					<?php echo $diff["type"]; ?>
+				</td>
+				<td>
 					<?php echo $lastScrape["Scrape"]["created"]; ?>
 				</td>
 				<td>
-					<a href="#" class="btn btn-primary">Commit changes</a>
+					<?php
+						echo $this->Html->link(
+							"Commit Changes",
+							"/diffs/commit/{$diff['type']}/{$diff['modified_according_to']}/{$diff['channel_id']}",
+							array(
+								"class" => "btn btn-primary"
+							),
+							"Are you sure you want to commit this change?"
+						);
+					?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
