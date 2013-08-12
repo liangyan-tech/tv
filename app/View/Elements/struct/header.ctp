@@ -22,9 +22,9 @@
 			<ul class="nav">
 				<?php $uri = $this->params->controller."_".$this->params->action; ?>
 
-				<li class="<?php echo ($uri == "home_index") ? "active" : "" ; ?>">
+				<li class="<?php echo ($uri == "diffs_index") ? "active" : "" ; ?>">
 					<?php
-						echo $this->Html->link('<i class="icon-white- icon-adjust"></i> Diffs', "/home", array(
+						echo $this->Html->link('<i class="icon-white- icon-adjust"></i> Diffs', "/diffs", array(
 							"escape" => false
 						));
 					?>

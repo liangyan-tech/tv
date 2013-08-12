@@ -36,8 +36,9 @@ class ChannelsController extends AppController {
 			$this->redirect("/channels");
 		}
 		
+		$vendors = $this->ScrapedItem->getVendors();
 		$channel = $this->Channel->findById($id);
-		$this->set(compact("channel", "id"));
+		$this->set(compact("channel", "id", "vendors"));
 	}
 
 	function delete($id) {

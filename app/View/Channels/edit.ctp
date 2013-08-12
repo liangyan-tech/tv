@@ -25,6 +25,18 @@
 
 <div class="modal-body">
 	<div class="control-group">
+		<label class="control-label">Channel Name</label>
+		<div class="controls">
+			<?php 
+				echo $this->Form->input("channel", array(
+					"class" => "input-xlarge",
+					"value" => ((isset($channel) && $channel) ? $channel["Channel"]["channel"] : "")
+				));
+			?>
+			<p class="help-inline validation-message"></p>
+		</div>
+	</div>
+	<div class="control-group">
 		<label class="control-label">Vendor</label>
 		<div class="controls">
 			<?php 
@@ -67,18 +79,6 @@
 				echo $this->Form->input("position", array(
 					"class" => "input-medium",
 					"value" => ((isset($channel) && $channel) ? $channel["Channel"]["position"] : "")
-				));
-			?>
-			<p class="help-inline validation-message"></p>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">Channel Name</label>
-		<div class="controls">
-			<?php 
-				echo $this->Form->input("channel", array(
-					"class" => "input-medium",
-					"value" => ((isset($channel) && $channel) ? $channel["Channel"]["channel"] : "")
 				));
 			?>
 			<p class="help-inline validation-message"></p>

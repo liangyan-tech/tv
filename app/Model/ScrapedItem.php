@@ -285,4 +285,12 @@ class ScrapedItem extends AppModel {
 
 		return $output;
 	}
+
+	function getVendors() {
+		$vendors = array();
+		foreach ($this->sources as $vendor => $source) {
+			$vendors[$vendor] = $vendor;
+		}
+		return $vendors;
+	}
 }
