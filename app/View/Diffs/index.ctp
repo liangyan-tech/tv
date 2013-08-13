@@ -12,7 +12,7 @@
 </style>
 
 <div class="page-header">
-	<h2>Diffs <small>Changes between the last two scrapes, last scraped at <?php echo $lastScrape["Scrape"]["created"]; ?></small></h2>
+	<h2>Differences <small>Changes between the last two scrapes, last scraped at <?php echo $lastScrape["Scrape"]["created"]; ?></small></h2>
 </div>
 
 <table class="table table-striped">
