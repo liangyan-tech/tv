@@ -84,18 +84,6 @@
 			<p class="help-inline validation-message"></p>
 		</div>
 	</div>
-	<div class="control-group">
-		<label class="control-label">Vendor</label>
-		<div class="controls">
-			<?php 
-				echo $this->Form->input("vendor", array(
-					"class" => "input-medium",
-					"value" => ((isset($channel) && $channel) ? $channel["Channel"]["vendor"] : "")
-				));
-			?>
-			<p class="help-inline validation-message"></p>
-		</div>
-	</div>
 </div>
 
 <div class="modal-footer">

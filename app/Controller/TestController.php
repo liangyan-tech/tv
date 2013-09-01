@@ -1,8 +1,10 @@
 <?php
+set_time_limit(600);
 class TestController extends AppController {
-	var $uses = array("ScrapedItem", "Channel");
+	var $uses = array("Scrape", "ScrapedItem", "Channel");
 
 	function index() {
-		$this->ScrapedItem->test();
+		$html = $this->ScrapedItem->getRaw();
+		$this->ScrapedItem->parseAndSave($html);
 	}
 }

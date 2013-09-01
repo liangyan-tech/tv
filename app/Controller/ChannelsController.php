@@ -1,6 +1,6 @@
 <?php
 set_time_limit(120);
-ini_set('memory_limit','256M');
+ini_set('memory_limit','1024M');
 class ChannelsController extends AppController {
 	var $uses = array("Channel", "ScrapedItem");
 

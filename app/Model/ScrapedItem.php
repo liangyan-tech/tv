@@ -1,7 +1,7 @@
 <?php
 App::import("Vendor", "simple_html_dom");
 App::import("Vendor", "finediff");
-ini_set('memory_limit','256M');
+ini_set('memory_limit','1024M');
 
 class ScrapedItem extends AppModel {
 	var $belongsTo = array("Scrape");
@@ -90,7 +90,7 @@ class ScrapedItem extends AppModel {
 	
 	function test() {
 		// $tmp = ClassRegistry::init("Tmp")->findById(1);
-		// $text = $this->_parseAndSave($tmp["Tmp"]["content"]);
+		// $text = $this->parseAndSave($tmp["Tmp"]["content"]);
 		$this->getDiffs();
 		// $this->_parseDiff("102.1 THE EDGE Toronto<ins> test</ins>");
 	}
@@ -223,7 +223,7 @@ class ScrapedItem extends AppModel {
 		$this->Channel = ClassRegistry::init("Channel");
 	}
 
-	private function _parseAndSave($text, $vendor = "rogers") {
+	public function parseAndSave($text, $vendor = "rogers") {
 		$this->Scrape->create();
 		$this->Scrape->save();
 		$scrape_id = $this->Scrape->id;
@@ -263,10 +263,10 @@ class ScrapedItem extends AppModel {
 		}
 
 		$html->clear(); unset($html);
-		die;
+		return true;
 	}
 
-	private function _getRaw( $vendor = "rogers" ) {
+	public function getRaw( $vendor = "rogers" ) {
 		$foreplay = "https://www.rogers.com/web/resources/service/residentialRedirect.jsp?setLanguage=en&setProvince=ON&customer_type=Residential&targetUrl=%2Fweb%2Flink%2FptvBrowsePackagesFlowBegin%3FforwardTo%3Dlanding";
 		$url = "https://www.rogers.com/web/link/ptvBrowsePackagesFlowBegin?forwardTo=landing";
 
