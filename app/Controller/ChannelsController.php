@@ -1,5 +1,5 @@
 <?php
-set_time_limit(120);
+set_time_limit(1200);
 ini_set('memory_limit','1024M');
 class ChannelsController extends AppController {
 	var $uses = array("Channel", "ScrapedItem");
@@ -47,5 +47,12 @@ class ChannelsController extends AppController {
 
 		$this->Session->setFlash("Channel has been deleted!", null, array("type" => "success"));
 		$this->redirect("/channels");
+	}
+
+	function init() {
+		$html = $this->ScrapedItem->getRaw();
+		$this->ScrapedItem->parseAndSave($html);
+		$this->Channel->copyFromScrape();
+		die("Init successful!");
 	}
 }
